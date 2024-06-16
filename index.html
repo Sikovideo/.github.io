@@ -6,83 +6,55 @@
     <title>シコシコ動画（Re:仮）</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
             background-color: #f5f5f5;
-            text-align: center;
+            overflow: hidden;
+            position: relative;
         }
         .header img {
-            width: 100%;
+            max-width: 100%;
             height: auto;
-        }
-        .form-container {
-            margin: 20px auto;
-            max-width: 800px;
-            text-align: center;
         }
         .scrolling-text {
             position: absolute;
             white-space: nowrap;
             font-size: 24px;
             top: 50%;
-            transform: translateY(-50%);
+            animation: scroll-text 15s linear infinite;
         }
-        .text-area {
-            position: relative;
-            height: 100px;
-            overflow: hidden;
+        @keyframes scroll-text {
+            0% {
+                left: 100%;
+            }
+            100% {
+                left: -100%;
+            }
         }
+        .text1 { color: red; }
+        .text2 { color: white; }
+        .text3 { color: blue; }
+        .text4 { color: green; }
     </style>
 </head>
 <body>
     <div class="header">
         <img src="https://www.dropbox.com/scl/fi/7l714uu0mk9ocm2nwy9t2/219_20240617002516.png?rlkey=yst541jr0ewo79ezikjakax07&raw=1" alt="シコシコ動画（Re:仮）">
     </div>
-    <div class="form-container">
-        <h2>シコシココメント.beta</h2>
-        <form id="textForm">
-            <input type="text" id="textInput" placeholder="ここに文字を入力">
-            <button type="submit">表示</button>
-        </form>
-    </div>
-    <div class="text-area" id="textArea">
-        <div class="scrolling-text" id="scrollingText"></div>
-    </div>
-    <script>
-        const form = document.getElementById('textForm');
-        const textInput = document.getElementById('textInput');
-        const scrollingText = document.getElementById('scrollingText');
-        const textArea = document.getElementById('textArea');
-        let isScrolling = false;
-
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const text = textInput.value;
-            if (text && !isScrolling) {
-                scrollingText.innerText = text;
-                startScrolling();
-                textInput.value = '';
-            }
-        });
-
-        function startScrolling() {
-            scrollingText.style.left = textArea.offsetWidth + 'px';
-            const endPos = -scrollingText.offsetWidth;
-            isScrolling = true;
-
-            function scroll() {
-                const currentPos = parseInt(scrollingText.style.left);
-                if (currentPos <= endPos) {
-                    isScrolling = false;
-                    return;
-                } else {
-                    scrollingText.style.left = currentPos - 2 + 'px';
-                }
-                requestAnimationFrame(scroll);
-            }
-            scroll();
-        }
-    </script>
+    <div class="scrolling-text text1">シコシコ動画最強！</div>
+    <div class="scrolling-text text2">シコ動</div>
+    <div class="scrolling-text text3">メンテナンスはよおわれ</div>
+    <div class="scrolling-text text4">運営頑張れ</div>
+    <div class="scrolling-text text1">オナニー攻撃やめろよ</div>
+    <div class="scrolling-text text2">早く動画みたい</div>
+    <div class="scrolling-text text3">エンジニア無能</div>
+    <div class="scrolling-text text4">かす</div>
+    <div class="scrolling-text text1">まこと坊主</div>
+    <div class="scrolling-text text2">通話中にトイレすんな</div>
+    <div class="scrolling-text text3">クソサイトにも程がある</div>
 </body>
 </html>
