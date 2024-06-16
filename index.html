@@ -16,15 +16,22 @@
             width: 100%;
             height: auto;
         }
-        .game-container {
+        .form-container {
             margin: 20px auto;
             max-width: 800px;
             text-align: center;
         }
-        canvas {
-            background: #000;
-            display: block;
-            margin: 0 auto;
+        .scrolling-text {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .text-area {
+            position: relative;
+            height: 100px;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -32,109 +39,47 @@
     <div class="header">
         <img src="https://www.dropbox.com/scl/fi/7l714uu0mk9ocm2nwy9t2/219_20240617002516.png?rlkey=yst541jr0ewo79ezikjakax07&raw=1" alt="シコシコ動画（Re:仮）">
     </div>
-    <div class="game-container">
-        <h2>ヘビゲーム</h2>
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div class="form-container">
+        <h2>文字を入力してください</h2>
+        <form id="textForm">
+            <input type="text" id="textInput" placeholder="ここに文字を入力">
+            <button type="submit">表示</button>
+        </form>
+    </div>
+    <div class="text-area" id="textArea">
+        <div class="scrolling-text" id="scrollingText"></div>
     </div>
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const grid = 16;
-        let count = 0;
-        let snake = {
-            x: 160,
-            y: 160,
-            dx: grid,
-            dy: 0,
-            cells: [],
-            maxCells: 4
-        };
-        let apple = {
-            x: 320,
-            y: 320
-        };
+        const form = document.getElementById('textForm');
+        const textInput = document.getElementById('textInput');
+        const scrollingText = document.getElementById('scrollingText');
+        const textArea = document.getElementById('textArea');
 
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min)) + min;
-        }
-
-        function loop() {
-            requestAnimationFrame(loop);
-
-            if (++count < 4) {
-                return;
-            }
-
-            count = 0;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            snake.x += snake.dx;
-            snake.y += snake.dy;
-
-            if (snake.x < 0) {
-                snake.x = canvas.width - grid;
-            } else if (snake.x >= canvas.width) {
-                snake.x = 0;
-            }
-
-            if (snake.y < 0) {
-                snake.y = canvas.height - grid;
-            } else if (snake.y >= canvas.height) {
-                snake.y = 0;
-            }
-
-            snake.cells.unshift({x: snake.x, y: snake.y});
-
-            if (snake.cells.length > snake.maxCells) {
-                snake.cells.pop();
-            }
-
-            ctx.fillStyle = 'red';
-            ctx.fillRect(apple.x, apple.y, grid - 1, grid - 1);
-
-            ctx.fillStyle = 'green';
-            snake.cells.forEach(function(cell, index) {
-                ctx.fillRect(cell.x, cell.y, grid - 1, grid - 1);
-
-                if (cell.x === apple.x && cell.y === apple.y) {
-                    snake.maxCells++;
-                    apple.x = getRandomInt(0, 25) * grid;
-                    apple.y = getRandomInt(0, 25) * grid;
-                }
-
-                for (let i = index + 1; i < snake.cells.length; i++) {
-                    if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-                        snake.x = 160;
-                        snake.y = 160;
-                        snake.cells = [];
-                        snake.maxCells = 4;
-                        snake.dx = grid;
-                        snake.dy = 0;
-
-                        apple.x = getRandomInt(0, 25) * grid;
-                        apple.y = getRandomInt(0, 25) * grid;
-                    }
-                }
-            });
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.which === 37 && snake.dx === 0) {
-                snake.dx = -grid;
-                snake.dy = 0;
-            } else if (e.which === 38 && snake.dy === 0) {
-                snake.dy = -grid;
-                snake.dx = 0;
-            } else if (e.which === 39 && snake.dx === 0) {
-                snake.dx = grid;
-                snake.dy = 0;
-            } else if (e.which === 40 && snake.dy === 0) {
-                snake.dy = grid;
-                snake.dx = 0;
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const text = textInput.value;
+            if (text) {
+                scrollingText.innerText = text;
+                startScrolling();
+                textInput.value = '';
             }
         });
 
-        requestAnimationFrame(loop);
+        function startScrolling() {
+            scrollingText.style.left = textArea.offsetWidth + 'px';
+            const endPos = -scrollingText.offsetWidth;
+
+            function scroll() {
+                const currentPos = parseInt(scrollingText.style.left);
+                if (currentPos <= endPos) {
+                    scrollingText.style.left = textArea.offsetWidth + 'px';
+                } else {
+                    scrollingText.style.left = currentPos - 2 + 'px';
+                }
+                requestAnimationFrame(scroll);
+            }
+            scroll();
+        }
     </script>
 </body>
 </html>
