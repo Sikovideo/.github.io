@@ -24,37 +24,45 @@
             position: absolute;
             white-space: nowrap;
             font-size: 24px;
-            top: 50%;
-            animation: scroll-text 15s linear infinite;
+            animation-timing-function: linear;
         }
         @keyframes scroll-text {
-            0% {
-                left: 100%;
+            from {
+                transform: translateX(100%);
             }
-            100% {
-                left: -100%;
+            to {
+                transform: translateX(-100%);
             }
         }
-        .text1 { color: red; }
-        .text2 { color: white; }
-        .text3 { color: blue; }
-        .text4 { color: green; }
+        .text-red { color: red; }
+        .text-white {
+            color: white;
+            text-shadow: 2px 2px 4px black;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <img src="https://www.dropbox.com/scl/fi/7l714uu0mk9ocm2nwy9t2/219_20240617002516.png?rlkey=yst541jr0ewo79ezikjakax07&raw=1" alt="シコシコ動画（Re:仮）">
     </div>
-    <div class="scrolling-text text1">シコシコ動画最強！</div>
-    <div class="scrolling-text text2">シコ動</div>
-    <div class="scrolling-text text3">メンテナンスはよおわれ</div>
-    <div class="scrolling-text text4">運営頑張れ</div>
-    <div class="scrolling-text text1">オナニー攻撃やめろよ</div>
-    <div class="scrolling-text text2">早く動画みたい</div>
-    <div class="scrolling-text text3">エンジニア無能</div>
-    <div class="scrolling-text text4">かす</div>
-    <div class="scrolling-text text1">まこと坊主</div>
-    <div class="scrolling-text text2">通話中にトイレすんな</div>
-    <div class="scrolling-text text3">クソサイトにも程がある</div>
+    <script>
+        const texts = [
+            "シコシコ動画最強！", "シコ動", "メンテナンスはよおわれ", "運営頑張れ", 
+            "オナニー攻撃やめろよ", "早く動画みたい", "エンジニア無能", "かす", 
+            "まこと坊主", "通話中にトイレすんな", "クソサイトにも程がある"
+        ];
+        const colors = ['text-red', 'text-white'];
+        const body = document.body;
+
+        texts.forEach(text => {
+            const div = document.createElement('div');
+            div.textContent = text;
+            div.classList.add('scrolling-text', colors[Math.floor(Math.random() * colors.length)]);
+            div.style.top = Math.random() * 90 + 'vh'; // Random height
+            div.style.animationDuration = Math.random() * 10 + 5 + 's'; // Random speed (5s to 15s)
+            div.style.animationName = 'scroll-text';
+            body.appendChild(div);
+        });
+    </script>
 </body>
 </html>
