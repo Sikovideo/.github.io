@@ -54,11 +54,12 @@
         const textInput = document.getElementById('textInput');
         const scrollingText = document.getElementById('scrollingText');
         const textArea = document.getElementById('textArea');
+        let isScrolling = false;
 
         form.addEventListener('submit', function(event) {
             event.preventDefault();
             const text = textInput.value;
-            if (text) {
+            if (text && !isScrolling) {
                 scrollingText.innerText = text;
                 startScrolling();
                 textInput.value = '';
@@ -68,11 +69,13 @@
         function startScrolling() {
             scrollingText.style.left = textArea.offsetWidth + 'px';
             const endPos = -scrollingText.offsetWidth;
+            isScrolling = true;
 
             function scroll() {
                 const currentPos = parseInt(scrollingText.style.left);
                 if (currentPos <= endPos) {
-                    scrollingText.style.left = textArea.offsetWidth + 'px';
+                    isScrolling = false;
+                    return;
                 } else {
                     scrollingText.style.left = currentPos - 2 + 'px';
                 }
