@@ -59,9 +59,15 @@
             div.textContent = text;
             div.classList.add('scrolling-text', colors[Math.floor(Math.random() * colors.length)]);
             div.style.top = Math.random() * 90 + 'vh'; // Random height
-            div.style.animationDuration = Math.random() * 10 + 5 + 's'; // Random speed (5s to 15s)
+            const duration = Math.random() * 10 + 5; // Random speed (5s to 15s)
+            div.style.animationDuration = duration + 's'; 
             div.style.animationName = 'scroll-text';
             body.appendChild(div);
+            
+            // Remove the element after the animation duration
+            setTimeout(() => {
+                body.removeChild(div);
+            }, duration * 1000); // duration is in seconds, multiply by 1000 to convert to milliseconds
         });
     </script>
 </body>
